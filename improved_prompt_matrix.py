@@ -32,13 +32,13 @@ class Script(scripts.Script):
         while True:
             found_matrix = False
             for this_prompt in all_prompts:
-                for data in re.finditer(r'(<([^>]+)>)', this_prompt):
+                for data in re.finditer(r'(<(?!(lora|hypernet):)([^>]+)>)', this_prompt):
                     if data:
                         found_matrix = True
                         # Remove last prompt as it has a found_matrix
                         all_prompts.remove(this_prompt)
                         span = data.span(1)
-                        items = data.group(2).split("|")
+                        items = data.group(3).split("|")
                         for item in items:
                             new_prompt = this_prompt[:span[0]] + item.strip() + this_prompt[span[1]:]
                             all_prompts.append(new_prompt.strip())
